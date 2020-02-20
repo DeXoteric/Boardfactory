@@ -19,7 +19,7 @@ var output_amount : float = 0.0
 
 var can_grab = false
 var grabbed_offset = Vector2()
-
+var is_new = true
 
 
 func _input_event(_viewport, event, _shape_idx):
@@ -31,4 +31,12 @@ func _input_event(_viewport, event, _shape_idx):
 func _process(_delta):
 	if Input.is_mouse_button_pressed(BUTTON_LEFT) and can_grab:
 		position = get_global_mouse_position() + grabbed_offset
-	
+	if is_new:
+		position = get_global_mouse_position()
+		if Input.is_mouse_button_pressed(BUTTON_LEFT):
+			is_new = false
+			var new_parent = get_node("/root/MainScene/IconContainer")
+			get_parent().remove_child(self)
+			new_parent.add_child(self)
+		elif Input.is_mouse_button_pressed(BUTTON_RIGHT):
+			get_parent().remove_child(self)
